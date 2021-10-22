@@ -14,7 +14,7 @@ public class Game {
     Font buttonsFont = new Font("Times new roman", Font.PLAIN, 17);
     JButton startButton, choice1, choice2, choice3, choice4;
     JTextArea mainTextArea;
-    int playerHP, monsterHP, silverRing;
+    int playerHP, monsterHP, silverRing, armadura, carta, vidaSoldado;
     String playerWeapon, position;
 
     TitleScreenHandler tsHandler = new TitleScreenHandler();
@@ -207,6 +207,42 @@ public class Game {
         choice4.setText("Dormir");
     }
 
+    public void cruzarRio(){
+        position = "cruzarRio";
+        mainTextArea.setText("La corriente te arrastra\n te golpeas contra una roca y quedas inconciente\n La corriente te arrastra hacia una cascada y mueres");
+        playerHP = playerHP-playerHP;
+        hpLabelNumber.setText(""+playerHP);
+        choice1.setText(">");
+        choice2.setText("");
+        choice3.setText("");
+        choice4.setText("");
+    }
+
+    public void adentrarseBosque(){
+        position = "adentrarseBosque";
+        mainTextArea.setText("Te adentras en el bosque y mientras vas caminando encuentras a un guardia herido\n¿Que haces?");
+        choice1.setText("Acercarse");
+        choice2.setText("Ignorar y seguir adelante");
+        choice3.setText("Volver");
+        choice4.setText("");
+    }
+
+    public void acercarseGuardia(){
+        position = "acercarseGuardia";
+        mainTextArea.setText("El guardia moribundo te pide porfavor que le entregues esta carta a su general");
+    }
+
+    public void dormir(){
+        position = "dormir";
+        mainTextArea.setText("Duermes durante dos horas al despertarte te sientes mucho mejor\n\n (Recibes 5 de vida!)");
+        playerHP = playerHP+5;
+        hpLabelNumber.setText(""+playerHP);
+        choice1.setText("<");
+        choice2.setText("");
+        choice3.setText("");
+        choice4.setText("");
+    }
+
 
     public void east(){
         position = "east";
@@ -295,7 +331,7 @@ public class Game {
 
     public void ending(){
         position = "ending";
-        mainTextArea.setText("Guard: Oh has matado ese gobin!?\n Muchas gracias! eres un heroe!\nBienvenido a nuestro pueblo\n\nFIN");
+        mainTextArea.setText("Guardia: Oh has matado ese gobin!?\n Muchas gracias! eres un heroe!\nBienvenido a nuestro pueblo\n\nFIN");
         choice1.setText("");
         choice2.setText("");
         choice3.setText("");
@@ -322,10 +358,9 @@ public class Game {
                     switch (yourChoice){
                         case "c1":
                             if (silverRing==1){
-                                ending();
+                                ending();break;
                             }else{
                                 talkGuard(); break;
-
                             }
                         case "c2": attackGuard();break;
                         case "c3": crossRoad();break;
@@ -352,9 +387,26 @@ public class Game {
                 case "north" :
                     switch (yourChoice){
                         case "c1" : crossRoad();break;
-                        case "c2" : ;break;
-                        case "c3" : break;
-                        case "c4" : break;
+                        case "c2" : cruzarRio();break;
+                        case "c3" : adentrarseBosque();break;
+                        case "c4" : dormir();break;
+                    }
+                    break;
+                case "cruzarRio":
+                    switch (yourChoice){
+                        case "c1": lose(); break;
+                    }
+                    break;
+                case "dormir":
+                    switch (yourChoice){
+                        case "c1": north(); break;
+                    }
+                    break;
+                case "adentrarseBosque":
+                    switch (yourChoice){
+                        case "c1" : break;
+                        case "c2" : break;
+                        case "c3" : north(); break;
                     }
                     break;
                 case "east":
