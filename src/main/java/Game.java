@@ -14,7 +14,7 @@ public class Game {
     Font buttonsFont = new Font("Times new roman", Font.PLAIN, 17);
     JButton startButton, choice1, choice2, choice3, choice4;
     JTextArea mainTextArea;
-    int playerHP, monsterHP;
+    int playerHP, monsterHP, silverRing;
     String playerWeapon, position;
 
     TitleScreenHandler tsHandler = new TitleScreenHandler();
@@ -193,7 +193,7 @@ public class Game {
         choice1.setText("Ir hacia el norte");
         choice2.setText("Ir hacia el este");
         choice3.setText("Ir hacia el sur");
-        choice4.setText("Ir hacie el oeste");
+        choice4.setText("Ir hacia el oeste");
     }
 
     public void north(){
@@ -240,11 +240,58 @@ public class Game {
         position = "playerAttack";
 
         int playerDamage = 0;
+        if (playerWeapon.equals("Sin arma")){
+            playerDamage = new java.util.Random().nextInt(5);
+        }else if (playerWeapon.equals("Espada Larga")){
+            playerDamage = new java.util.Random().nextInt(8);
+        }
 
-        playerDamage = new java.util.Random().nextInt(5);
+        mainTextArea.setText("Has atacado al monstruo y le has hecho " + playerDamage + " daño!");
+        monsterHP = monsterHP - playerDamage;
+        choice1.setText("<");
+        choice2.setText("");
+        choice3.setText("");
+        choice4.setText("");
     }
 
+    public void monsterAttack(){
+        position = "monsterAttack";
 
+        int monsterDamage = 0;
+
+        monsterDamage = new java.util.Random().nextInt(6);
+        mainTextArea.setText("El monstruo te ha atacado y te ha hecho " + monsterDamage + " de daño");
+        playerHP = playerHP - monsterDamage;
+        hpLabelNumber.setText(""+playerHP);
+        choice1.setText("<");
+        choice2.setText("");
+        choice3.setText("");
+        choice4.setText("");
+    }
+    public void win(){
+        position = "win";
+        mainTextArea.setText("Has matado al monstruo!! \n\nEl monstruo ha soltado un anillo \n\n (Has obtenido un anillo plateado)");
+        silverRing = 1;
+
+        choice1.setText("Ir al hacia el este");
+        choice2.setText("");
+        choice3.setText("");
+        choice4.setText("");
+    }
+
+    public void lose(){
+        position = "lose";
+        mainTextArea.setText("Has muerto \n\n(Game Over)");
+        choice1.setText("");
+        choice2.setText("");
+        choice3.setText("");
+        choice4.setText("");
+
+        choice1.setVisible(false);
+        choice2.setVisible(false);
+        choice3.setVisible(false);
+        choice4.setVisible(false);
+    }
 
     public class TitleScreenHandler implements ActionListener{
         public void actionPerformed(ActionEvent event){
@@ -306,10 +353,35 @@ public class Game {
                 break;
                     case "fight":
                         switch (yourChoice){
-                            case "c1" : break;
+                            case "c1" : playerAttack();break;
                             case "c2" : crossRoad();break;
                         }
-
+                        break;
+                case "playerAttack":
+                    switch (yourChoice){
+                        case "c1":
+                            if (monsterHP<1){
+                                win();
+                            }else {
+                                monsterAttack();
+                            }
+                            break;
+                            }
+                break;
+                case "monsterAttack":
+                    switch (yourChoice){
+                        case "c1":
+                        if (playerHP < 1) {
+                            lose();
+                        }else {
+                            fight();
+                        }
+                    }
+                    break;
+                case "win":
+                    switch (yourChoice){
+                        case "c1": crossRoad();break;
+                    }
 
          }
         }
