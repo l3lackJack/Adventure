@@ -15,7 +15,7 @@ public class Game {
     Font buttonsFont = new Font("Times new roman", Font.PLAIN, 17);
     JButton startButton, choice1, choice2, choice3, choice4;
     JTextArea mainTextArea;
-    int playerHP, monsterHP, silverRing, armadura, carta, vidaSoldado,muerteHenry,osoHP;
+    int playerHP, monsterHP, silverRing, armadura, carta, simpatia,muerteHenry,osoHP;
     String playerWeapon, position;
 
     TitleScreenHandler tsHandler = new TitleScreenHandler();
@@ -358,6 +358,31 @@ public class Game {
         choice3.setText("");
         choice4.setText("");
     }
+
+    public void osoAtaca(){
+        position = "osoAtaca";
+        int dañoOso = 0;
+        dañoOso = new java.util.Random().nextInt(7);
+        mainTextArea.setText("El oso os ha atacado\nhas recibido " + dañoOso + " de daño");
+        playerHP = playerHP - dañoOso;
+        hpLabelNumber.setText(""+playerHP);
+        choice1.setText("<");
+        choice2.setText("");
+        choice3.setText("");
+        choice4.setText("");
+    }
+
+    public void peleaOsoGanada(){
+        position = "peleaOsoGanada";
+        mainTextArea.setText("Has matado al oso!!\nhas luchado de manera espectacular!, el guardia esta agradecido contigo\nGuardia: Voy a llevar a henry al campamento\nacompañame para recibir tu recompensa)");
+        simpatia = 1;
+        choice1.setText("Seguir Guardia");
+        choice2.setText("");
+        choice3.setText("");
+        choice4.setText("");
+    }
+
+
 
     public void dormir(){
         position = "dormir";
