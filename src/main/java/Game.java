@@ -1,3 +1,4 @@
+import javax.sound.midi.MidiFileFormat;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -230,6 +231,77 @@ public class Game {
     public void acercarseGuardia(){
         position = "acercarseGuardia";
         mainTextArea.setText("El guardia moribundo te pide porfavor que le entregues esta carta a su general");
+        choice1.setText("Acceptar");
+        choice2.setText("Ignorar y seguir adelante");
+        choice3.setText("");
+        choice4.setText("");
+    }
+
+    public void acceptarMision(){
+        position = "acceptarMision";
+        mainTextArea.setText("El guardia te lo agradece y te entrega la carta");
+        carta = 1;
+        choice1.setText("Subir la montaña");
+        choice2.setText("");
+        choice3.setText("");
+        choice4.setText("");
+    }
+
+    public void subirMontanya(){
+        position = "subirMontanya";
+        mainTextArea.setText("Mientras subes por la montaña ves que hay dos caminos\nHacia donde quieres ir?");
+        choice1.setText("Derecha");
+        choice2.setText("Izquierda");
+        choice3.setText("Volver");
+        choice4.setText("");
+
+    }
+    public void cartaEntregada(){
+        position = "cartaEntregada";
+        mainTextArea.setText(" Guardia: No te olvides de entregar la cartga por favor!");
+        choice1.setText("Subir la montaña");
+        choice2.setText("Volver al rio");
+        choice3.setText("");
+        choice4.setText("");
+    }
+
+    public void derecha(){
+        position="derecha";
+        mainTextArea.setText("Vas caminando y encuentras un guardia:\n\nGuardia: Alto!, esto es una zona restringida\n");
+        choice1.setText("Traigo una carta importante");
+        choice2.setText("Dejame pasar");
+        choice3.setText("Irte");
+        choice4.setText("");
+    }
+    public void entregarCarta(){
+        position = "entregarCarta";
+        mainTextArea.setText("Oh, asi que Henry te ha dicho que entregues esta carta\ndonde esta el ahora mismo?");
+        choice1.setText("Esta apunto de morir");
+        choice2.setText("No tengo ni idea");
+        choice3.setText("Irte");
+        choice4.setText("");
+    }
+
+    public void forzarEntrada(){
+        position = "forzarEntrada";
+        mainTextArea.setText("Guardia: No puedes pasar y si intentas algo gracioso\nmoriras!");
+        choice1.setText("Atacar");
+        choice2.setText("Irte");
+        choice3.setText("");
+        choice4.setText("");
+    }
+
+    public void entregarCartaf2(){
+        position = "entregarCartaf2";
+        mainTextArea.setText("Guardia: Por favor llevame con el");
+        choice1.setText("Guiar guardia");
+        choice2.setText("");
+        choice3.setText("");
+        choice4.setText("");
+    }
+
+    public void henryMuere(){
+        mainTextArea.setText("Guardia: Entiendo, porfavor espera que\nentregue esta carta al general");
     }
 
     public void dormir(){
@@ -404,11 +476,32 @@ public class Game {
                     break;
                 case "adentrarseBosque":
                     switch (yourChoice){
-                        case "c1" : break;
-                        case "c2" : break;
+                        case "c1" :
+                            if (carta==1){
+                             cartaEntregada(); break;
+                            }else {
+                                acercarseGuardia();
+                                break;
+                            }
+                        case "c2" : subirMontanya();break;
                         case "c3" : north(); break;
                     }
                     break;
+                case "subirMontanya":
+                    switch (yourChoice){
+                        case "c1": break;
+                        case "c2": break;
+                        case "c3": adentrarseBosque(); break;
+                    }break;
+                case "acercarseGuardia":
+                    switch (yourChoice){
+                        case "c1" : acceptarMision();break;
+                        case "c2" : subirMontanya(); break;
+                    }break;
+                case "acceptarMision" :
+                    switch (yourChoice){
+                        case "c1" : subirMontanya();break;
+                    }break;
                 case "east":
                     switch (yourChoice){
                         case "c1" :crossRoad();break;
