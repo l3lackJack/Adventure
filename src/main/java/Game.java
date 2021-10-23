@@ -15,7 +15,7 @@ public class Game {
     Font buttonsFont = new Font("Times new roman", Font.PLAIN, 17);
     JButton startButton, choice1, choice2, choice3, choice4;
     JTextArea mainTextArea;
-    int playerHP, monsterHP, silverRing, armadura, carta, vidaSoldado;
+    int playerHP, monsterHP, silverRing, armadura, carta, vidaSoldado,muerteHenry,osoHP;
     String playerWeapon, position;
 
     TitleScreenHandler tsHandler = new TitleScreenHandler();
@@ -151,6 +151,7 @@ public class Game {
     public void playerSetup(){
         playerHP = 15;
         monsterHP =20;
+        osoHP = 30;
         playerWeapon = "Sin arma";
         weaponLabelName.setText(playerWeapon);
         hpLabelNumber.setText(""+ playerHP);
@@ -301,7 +302,61 @@ public class Game {
     }
 
     public void henryMuere(){
-        mainTextArea.setText("Guardia: Entiendo, porfavor espera que\nentregue esta carta al general");
+        position = "henryMuere";
+        carta = 0;
+        armadura = 1;
+        muerteHenry=1;
+        mainTextArea.setText("Guardia: Entiendo, porfavor espera que\nentregue esta carta al general\n\n(20 minutos despues...\nGeneral: Muchas gracias por entregar la carta\nComo recompensa te daremos esta armadura\n\n(Has obtenido una armandura!))");
+        choice1.setText("De nada!(Irse)");
+        choice2.setText("");
+        choice3.setText("");
+        choice4.setText("");
+    }
+
+    public void adentraseBosqueNoHenry(){
+        position = "adentraseBosqueNoHenry";
+        mainTextArea.setText("Mientras caminas por el bosque ves el cadaver de henry\nla idea de haber podido salvarlo te atormenta\n\n(Pierdes 1 de vida)");
+        choice1.setText("Subes la montaña");
+        choice2.setText("Le robas la espada");
+        choice3.setText("Volver");
+        choice4.setText("");
+
+    }
+
+    public void guiarGuardia(){
+        position = "guiarGuardia";
+        mainTextArea.setText("Llegando a la zona donde se encuentra henry\nel guardia observa un oso acercarse a henry\nrapidamente se lanza a pelear contra el oso\n\n(¿Que haces?");
+        choice1.setText("Ayudar al guardia");
+        choice2.setText("Mirar la pelea");
+        choice3.setText("");
+        choice4.setText("");
+    }
+
+    public void ayudarPelea(){
+        position = "ayudarPelea";
+        mainTextArea.setText("HP Oso: " + osoHP + "\n\nQue vas a hacer?");
+        choice1.setText("Atacar");
+        choice2.setText("");
+        choice3.setText("");
+        choice4.setText("");
+    }
+
+    public void peleaOso(){
+        position = "peleaOso";
+        int playerDamage = 0;
+        if (playerWeapon.equals("Sin arma")){
+            playerDamage = new java.util.Random().nextInt(5);
+        }else if (playerWeapon.equals("Espada Larga")){
+            playerDamage = new java.util.Random().nextInt(8);
+        }
+        int dañoGuardia= 0;
+        dañoGuardia = new java.util.Random().nextInt(5);
+        mainTextArea.setText("Tu y el guardia habeis atacado al oso y le habeis hecho " + playerDamage + dañoGuardia + " daño!");
+        monsterHP = monsterHP - (playerDamage+dañoGuardia);
+        choice1.setText("<");
+        choice2.setText("");
+        choice3.setText("");
+        choice4.setText("");
     }
 
     public void dormir(){
@@ -353,7 +408,6 @@ public class Game {
         }else if (playerWeapon.equals("Espada Larga")){
             playerDamage = new java.util.Random().nextInt(8);
         }
-
         mainTextArea.setText("Has atacado al monstruo y le has hecho " + playerDamage + " daño!");
         monsterHP = monsterHP - playerDamage;
         choice1.setText("<");
