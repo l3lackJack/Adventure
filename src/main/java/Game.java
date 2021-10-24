@@ -15,7 +15,7 @@ public class Game {
     Font buttonsFont = new Font("Times new roman", Font.PLAIN, 17);
     JButton startButton, choice1, choice2, choice3, choice4;
     JTextArea mainTextArea;
-    int playerHP, monsterHP, silverRing, armadura, carta, simpatia,muerteHenry,osoHP;
+    int playerHP, monsterHP, silverRing, armadura, carta, simpatia,muerteHenry,osoHP,cartaRecibida;
     String playerWeapon, position;
 
     TitleScreenHandler tsHandler = new TitleScreenHandler();
@@ -225,7 +225,7 @@ public class Game {
         mainTextArea.setText("Te adentras en el bosque y mientras vas caminando encuentras a un guardia herido\n¿Que haces?");
         choice1.setText("Acercarse");
         choice2.setText("Ignorar y seguir adelante");
-        choice3.setText("Volver");
+        choice3.setText("Volver al rio");
         choice4.setText("");
     }
 
@@ -233,7 +233,7 @@ public class Game {
         position = "acercarseGuardia";
         mainTextArea.setText("El guardia moribundo te pide porfavor que le entregues esta carta a su general");
         choice1.setText("Acceptar");
-        choice2.setText("Ignorar y seguir adelante");
+        choice2.setText("Ignorar y subir la montaña");
         choice3.setText("");
         choice4.setText("");
     }
@@ -242,6 +242,7 @@ public class Game {
         position = "acceptarMision";
         mainTextArea.setText("El guardia te lo agradece y te entrega la carta");
         carta = 1;
+        cartaRecibida = 1;
         choice1.setText("Subir la montaña");
         choice2.setText("");
         choice3.setText("");
@@ -250,16 +251,16 @@ public class Game {
 
     public void subirMontanya(){
         position = "subirMontanya";
-        mainTextArea.setText("Mientras subes por la montaña ves que hay dos caminos\nHacia donde quieres ir?");
+        mainTextArea.setText("Mientras vas por la montaña ves que hay dos caminos\nHacia donde quieres ir?");
         choice1.setText("Derecha");
         choice2.setText("Izquierda");
-        choice3.setText("Volver");
+        choice3.setText("Ir hacia el rio");
         choice4.setText("");
 
     }
     public void cartaEntregada(){
         position = "cartaEntregada";
-        mainTextArea.setText(" Guardia: No te olvides de entregar la cartga por favor!");
+        mainTextArea.setText(" Guardia: No te olvides de entregar la carta por favor!");
         choice1.setText("Subir la montaña");
         choice2.setText("Volver al rio");
         choice3.setText("");
@@ -268,10 +269,10 @@ public class Game {
 
     public void derecha(){
         position="derecha";
-        mainTextArea.setText("Vas caminando y encuentras un guardia:\n\nGuardia: Alto!, esto es una zona restringida\n");
+        mainTextArea.setText("Vas caminando y encuentras un campamento\n\nGuardia: Alto!, esto es una zona restringida\n");
         choice1.setText("Traigo una carta importante");
         choice2.setText("Dejame pasar");
-        choice3.setText("Irte");
+        choice3.setText("Bajar la montaña");
         choice4.setText("");
     }
     public void entregarCarta(){
@@ -282,12 +283,21 @@ public class Game {
         choice3.setText("Irte");
         choice4.setText("");
     }
+    public void noHaycarta(){
+        position = "noHaycarta";
+        mainTextArea.setText("Guardia: Señor si no tiene un motivo importante no le podemos dejar pasar");
+        choice1.setText("<");
+        choice2.setText("");
+        choice3.setText("");
+        choice4.setText("");
+
+    }
 
     public void forzarEntrada(){
         position = "forzarEntrada";
-        mainTextArea.setText("Guardia: No puedes pasar y si intentas algo gracioso\nmoriras!");
-        choice1.setText("Atacar");
-        choice2.setText("Irte");
+        mainTextArea.setText("Guardia: No puedes pasar y si intentas algo gracioso moriras!");
+        choice1.setText("<");
+        choice2.setText("");
         choice3.setText("");
         choice4.setText("");
     }
@@ -306,7 +316,7 @@ public class Game {
         carta = 0;
         armadura = 1;
         muerteHenry=1;
-        mainTextArea.setText("Guardia: Entiendo, porfavor espera que\nentregue esta carta al general\n\n(20 minutos despues...\nGeneral: Muchas gracias por entregar la carta\nComo recompensa te daremos esta armadura\n\n(Has obtenido una armandura!))");
+        mainTextArea.setText("Guardia: Entiendo, porfavor espera que\nentregue esta carta al general\nGeneral: Muchas gracias por entregar la carta\nComo recompensa te daremos esta armadura\n\n(Has obtenido una armandura!))");
         choice1.setText("De nada!(Irse)");
         choice2.setText("");
         choice3.setText("");
@@ -315,12 +325,13 @@ public class Game {
 
     public void adentraseBosqueNoHenry(){
         position = "adentraseBosqueNoHenry";
-        mainTextArea.setText("Mientras caminas por el bosque ves el cadaver de henry\nla idea de haber podido salvarlo te atormenta\n\n(Pierdes 1 de vida)");
+        mainTextArea.setText("Mientras caminas por el bosque ves el cadaver de Henry la idea de haber podido salvarlo te atormenta\n\n(Pierdes 1 de vida)");
+        playerHP=playerHP-1;
+        hpLabelNumber.setText(""+playerHP);
         choice1.setText("Subes la montaña");
-        choice2.setText("Le robas la espada");
-        choice3.setText("Volver");
+        choice2.setText("Volver al rio");
+        choice3.setText("");
         choice4.setText("");
-
     }
 
     public void guiarGuardia(){
@@ -345,12 +356,12 @@ public class Game {
         position = "peleaOso";
         int playerDamage = 0;
         if (playerWeapon.equals("Sin arma")){
-            playerDamage = new java.util.Random().nextInt(5);
+            playerDamage = new java.util.Random().nextInt(3);
         }else if (playerWeapon.equals("Espada Larga")){
             playerDamage = new java.util.Random().nextInt(8);
         }
         int dañoGuardia= 0;
-        dañoGuardia = new java.util.Random().nextInt(5);
+        dañoGuardia = new java.util.Random().nextInt(6);
         mainTextArea.setText("Tu y el guardia habeis atacado al oso y le habeis hecho " + playerDamage + dañoGuardia + " daño!");
         monsterHP = monsterHP - (playerDamage+dañoGuardia);
         choice1.setText("<");
@@ -374,7 +385,7 @@ public class Game {
 
     public void peleaOsoGanada(){
         position = "peleaOsoGanada";
-        mainTextArea.setText("Has matado al oso!!\nhas luchado de manera espectacular!, el guardia esta agradecido contigo\nGuardia: Voy a llevar a henry al campamento\nacompañame para recibir tu recompensa)");
+        mainTextArea.setText("Has matado al oso!! has luchado de manera espectacular!, el guardia esta agradecido contigo\nGuardia: Voy a llevar a henry al campamento acompañame para recibir tu recompensa");
         simpatia = 1;
         choice1.setText("Seguir Guardia");
         choice2.setText("");
@@ -556,21 +567,32 @@ public class Game {
                 case "adentrarseBosque":
                     switch (yourChoice){
                         case "c1" :
-                            if (carta==1){
-                             cartaEntregada(); break;
-                            }else {
-                                acercarseGuardia();
-                                break;
-                            }
+                          if (muerteHenry==1){
+                              adentraseBosqueNoHenry();break;
+                          }else if (muerteHenry==0 && carta==1){
+                              cartaEntregada();break;
+                          }else{
+                              acercarseGuardia();break;
+                          }
                         case "c2" : subirMontanya();break;
                         case "c3" : north(); break;
                     }
                     break;
+                case "adentraseBosqueNoHenry":
+                    switch (yourChoice){
+                        case "c1": subirMontanya(); break;
+                        case "c2": north();break;
+                    }
                 case "subirMontanya":
                     switch (yourChoice){
-                        case "c1": break;
+                        case "c1": derecha();
                         case "c2": break;
-                        case "c3": adentrarseBosque(); break;
+                        case "c3": if(muerteHenry==1){
+                            adentraseBosqueNoHenry();break;
+                        }else {
+                            adentrarseBosque();
+                            break;
+                        }
                     }break;
                 case "acercarseGuardia":
                     switch (yourChoice){
@@ -581,6 +603,42 @@ public class Game {
                     switch (yourChoice){
                         case "c1" : subirMontanya();break;
                     }break;
+
+                case "derecha":
+                    switch (yourChoice){
+                        case "c1" :
+                            if (cartaRecibida==1){
+                                entregarCarta();break;
+                            }else{
+                                noHaycarta();break;
+                            }
+                        case "c2" : forzarEntrada();break;
+                        case "c3" : subirMontanya();
+                    }break;
+                case "noHaycarta":
+                    switch (yourChoice){
+                        case "c1":derecha();break;
+                    }break;
+                case "forzarEntrada":
+                    switch (yourChoice){
+                        case "c1":derecha();break;
+                    }break;
+                case "entregarCarta":
+                    switch (yourChoice){
+                        case "c1": entregarCartaf2();break;
+                        case "c2": henryMuere();break;
+                        case "c3": derecha();break;
+                    }break;
+                case "entregarCartaf2":
+                    switch (yourChoice){
+                        case "c1": guiarGuardia();break;
+                    }
+                case "henryMuere":
+                    switch (yourChoice){
+                        case "c1": subirMontanya();
+                    }break;
+
+
                 case "east":
                     switch (yourChoice){
                         case "c1" :crossRoad();break;
