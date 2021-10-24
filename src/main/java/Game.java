@@ -360,11 +360,13 @@ public class Game {
         }else if (playerWeapon.equals("Espada Larga")){
             playerDamage = new java.util.Random().nextInt(8);
         }
-        int dañoGuardia= 0;
+        int dañoGuardia= 0, dañoCombinado=0;
         dañoGuardia = new java.util.Random().nextInt(6);
-        mainTextArea.setText("Tu y el guardia habeis atacado al oso y le habeis hecho " + playerDamage + dañoGuardia + " daño!");
-        monsterHP = monsterHP - (playerDamage+dañoGuardia);
-        choice1.setText("<");
+
+        dañoCombinado = dañoGuardia+playerDamage;
+        mainTextArea.setText("Tu y el guardia habeis atacado al oso y le habeis hecho " + dañoCombinado + " daño!");
+        osoHP = osoHP - dañoCombinado;
+        choice1.setText(">");
         choice2.setText("");
         choice3.setText("");
         choice4.setText("");
@@ -393,7 +395,38 @@ public class Game {
         choice4.setText("");
     }
 
+    public void mirarPelea(){
+        position = "mirarPelea";
+        mainTextArea.setText("Mientras la pelea continua, el guardia se tropieza, y el oso aprovecha para darle el golpe final, el oso enfadado salta encima tuyo y te arranca un brazo, no te da tiempo de hacer nada, el oso acaba contigo");
+        playerHP = playerHP-playerHP;
+        hpLabelNumber.setText(""+playerHP);
+        choice1.setText(">");
+        choice2.setText("");
+        choice3.setText("");
+        choice4.setText("");
+    }
 
+    public void recibirRecompensa(){
+        position = "recibirRecompensa";
+        mainTextArea.setText("Guardia: Ya hemos llegado al campamento, voy a llevar a Henry a la enfermeria habla con el general mientras vuelvo.\nGeneral:He oido que has entregado una carta muy importante y que has salvado a Henry\n\n(Has recibido set de Oficial))");
+        playerHP = playerHP+100;
+        hpLabelNumber.setText(""+playerHP);
+        playerWeapon = "Espada Gladius";
+        weaponLabelName.setText(playerWeapon);
+        choice1.setText("De nada (Irte)");
+        choice2.setText("");
+        choice3.setText("");
+        choice4.setText("");
+    }
+
+    public void guardiaAgradecido(){
+        position = "guardiaAgradecido";
+        mainTextArea.setText("Guardia: Hola Heroe, como estas? gracias por tu ayuda, Henry esta vivo y hemos matado al oso que atormentaba al pueblo");
+        choice1.setText("Me alegro!(Irse)");
+        choice2.setText("");
+        choice3.setText("");
+        choice4.setText("");
+    }
 
     public void dormir(){
         position = "dormir";
@@ -401,6 +434,15 @@ public class Game {
         playerHP = playerHP+5;
         hpLabelNumber.setText(""+playerHP);
         choice1.setText("<");
+        choice2.setText("");
+        choice3.setText("");
+        choice4.setText("");
+    }
+
+    public void rangoOficial(){
+        position = "rangoOficial";
+        mainTextArea.setText("Guardia: Hola Oficial,pase porfavor espero que tenga un buen dia, Si necesita algo por favor no dude en llamarme.\n\n(Fin)");
+        choice1.setText("");
         choice2.setText("");
         choice3.setText("");
         choice4.setText("");
@@ -448,6 +490,15 @@ public class Game {
         monsterHP = monsterHP - playerDamage;
         choice1.setText("<");
         choice2.setText("");
+        choice3.setText("");
+        choice4.setText("");
+    }
+
+    public void henryVive(){
+        position = "henryVive";
+        mainTextArea.setText("Estas pasando por la zona donde has rescatado a henry, Te sientes contento porque lo has podido ayudar");
+        choice1.setText("Subir montaña");
+        choice2.setText("Volver al rio");
         choice3.setText("");
         choice4.setText("");
     }
@@ -519,11 +570,13 @@ public class Game {
                 case "townGate":
                     switch (yourChoice){
                         case "c1":
-                            if (silverRing==1){
-                                ending();break;
-                            }else{
-                                talkGuard(); break;
-                            }
+                          if (simpatia==1){
+                              rangoOficial();break;
+                          }else if(silverRing==1){
+                              ending();break;
+                          }else{
+                              talkGuard();break;
+                          }
                         case "c2": attackGuard();break;
                         case "c3": crossRoad();break;
                     }
@@ -550,10 +603,19 @@ public class Game {
                     switch (yourChoice){
                         case "c1" : crossRoad();break;
                         case "c2" : cruzarRio();break;
-                        case "c3" : adentrarseBosque();break;
+                        case "c3" : if (simpatia==1){
+                            henryVive();break;
+                        }else {
+                            adentrarseBosque();break;
+                        }
                         case "c4" : dormir();break;
-                    }
-                    break;
+                    }break;
+                case "henryVive":
+                    switch (yourChoice){
+                        case "c1": subirMontanya();break;
+                        case "c2": north();break;
+                    }break;
+
                 case "cruzarRio":
                     switch (yourChoice){
                         case "c1": lose(); break;
@@ -585,13 +647,18 @@ public class Game {
                     }
                 case "subirMontanya":
                     switch (yourChoice){
-                        case "c1": derecha();
-                        case "c2": break;
-                        case "c3": if(muerteHenry==1){
-                            adentraseBosqueNoHenry();break;
+                        case "c1": if (simpatia==1){
+                            guardiaAgradecido();break;
                         }else {
-                            adentrarseBosque();
-                            break;
+                            derecha();break;
+                        }
+                        case "c2": break;
+                        case "c3": if (simpatia==1){
+                            henryVive();break;
+                        }else if(muerteHenry==1){
+                            adentraseBosqueNoHenry();break;
+                        }else{
+                            adentrarseBosque();break;
                         }
                     }break;
                 case "acercarseGuardia":
@@ -632,12 +699,56 @@ public class Game {
                 case "entregarCartaf2":
                     switch (yourChoice){
                         case "c1": guiarGuardia();break;
-                    }
+                    }break;
                 case "henryMuere":
+                    switch (yourChoice){
+                        case "c1": subirMontanya();break;
+                    }break;
+                case "guiarGuardia":
+                    switch (yourChoice){
+                        case "c1": ayudarPelea();break;
+                        case "c2" : mirarPelea();break;
+                    }break;
+                case "mirarPelea":
+                    switch (yourChoice){
+                        case "c1": lose();break;
+                    }break;
+                case "ayudarPelea":
+                    switch (yourChoice){
+                        case "c1":peleaOso();break;
+                    }break;
+
+                case "peleaOso":
+                    switch (yourChoice){
+                        case "c1":
+                            if (osoHP<1){
+                             peleaOsoGanada();break;
+                            }else{
+                                osoAtaca();break;
+                            }
+                    }break;
+                case "osoAtaca":
+                    switch (yourChoice){
+                        case "c1": if(playerHP<1){
+                                lose();break;
+                        }else{
+                            ayudarPelea();break;
+                        }
+                    }break;
+
+                case "peleaOsoGanada":
+                    switch (yourChoice){
+                        case "c1": recibirRecompensa();break;
+                    }break;
+
+                case "recibirRecompensa":
                     switch (yourChoice){
                         case "c1": subirMontanya();
                     }break;
-
+                case "guardiaAgradecido":
+                    switch (yourChoice){
+                        case "c1":subirMontanya();break;
+                    }break;
 
                 case "east":
                     switch (yourChoice){
